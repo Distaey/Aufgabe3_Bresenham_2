@@ -1,7 +1,5 @@
 package main;
 
-import draw.Draw;
-
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -114,7 +112,7 @@ public class DrawThread implements Runnable {
                     Point point = line.getCoords().get(i);
                     drawn.add(point);
                     
-//                    System.out.println(point.x + " " + point.y);
+                    System.out.println(point.x + " " + point.y);
                     
                     Display.getDefault().asyncExec(new Runnable() {
                         public void run() {
