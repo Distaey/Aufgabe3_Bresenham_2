@@ -136,7 +136,9 @@ public class GUI3 extends Shell {
 			public void mouseDown(MouseEvent e) {}
 			public void mouseUp(MouseEvent e) {
 				System.out.println("Start");
-				drawThread.start();
+				if(!drawThread.isRunning()) {
+					drawThread.start();
+				}
 			}
 			public void mouseDoubleClick(MouseEvent e) {}
 		});
