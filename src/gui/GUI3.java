@@ -132,25 +132,10 @@ public class GUI3 extends Shell {
 			public void mouseDoubleClick(MouseEvent arg0) {}
 		});
 		
-		/*
-		canvas.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				e.gc.drawPoint(1, 1);
-			}
-		});*/
-		
 		sBtn.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {}
 			public void mouseUp(MouseEvent e) {
 				System.out.println("Start");
-				//drawThread.start();
-				canvas.addPaintListener(new PaintListener(){
-					public void paintControl (PaintEvent e) {
-						//GC gc = e.gc;
-						//drawThread.start();
-						//gc.drawPoint(x, y);;
-					}
-      		    });
 				drawThread.start();
 			}
 			public void mouseDoubleClick(MouseEvent e) {}
@@ -172,8 +157,8 @@ public class GUI3 extends Shell {
 	}
 	
 	public void updateGui() {
-        System.out.println("updateGui() "+newLines.size());
         if(newLines.size() > 0) {
+    		System.out.println("updateGui() "+newLines.size());
             drawThread.addLines(newLines);
             for (Line line: newLines) {
                 xTextArea.append(line.getxPoint());

@@ -4,14 +4,17 @@ import draw.Draw;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Drawable;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.GCData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import javax.swing.*;
+
 //import java.awt.*;
 import java.util.ArrayList;
 
@@ -27,17 +30,22 @@ public class DrawThread implements Runnable {
     private ArrayList<Line> newLines = new ArrayList<>();
     private ArrayList<Line> newLineBuffer = new ArrayList<>();
     private Canvas canvas;
+    private GC gc;
+    Color cc;
     Text xTextArea;
     Text yTextArea;
 
     public DrawThread(Canvas canvas, Text xTextArea, Text yTextArea) {
         this.canvas = canvas;
+        this.gc = new GC(canvas);
         this.xTextArea = xTextArea;
         this.yTextArea = yTextArea;
-        canvas.addPaintListener(new PaintListener() {
-        	public void paintControl(PaintEvent e) {
-        	}
-        });
+        
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+            	cc = new Color(Display.getDefault(), 0, 0, 0);
+            }
+         });
     }
 
     public void start() {
@@ -95,9 +103,13 @@ public class DrawThread implements Runnable {
                     drawn.add(point);
                     
                     System.out.println(point.x + " " + point.y);
-                    canvas.addPaintListener(listener);
-                    //draw.setCoords(drawn);
-                    //draw.repaint();
+                    
+                    Display.getDefault().asyncExec(new Runnable() {
+                        public void run() {
+                        	gc.setForeground(cc);
+                            gc.drawPoint(point.x, point.y);
+                        }
+                     });
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException ex) {
@@ -105,11 +117,20 @@ public class DrawThread implements Runnable {
                 }
                 newLines.remove(0);
 
-                xTextArea.setText(null);
-                yTextArea.setText(null);
+                Display.getDefault().asyncExec(new Runnable() {
+                    public void run() {
+                    	xTextArea.setText("");
+                        yTextArea.setText("");
+                    }
+                 });
+                
                 for(Line thisLine: newLines) {
-                    xTextArea.append(thisLine.getxPoint());
-                    yTextArea.append(thisLine.getyPoint());
+                	Display.getDefault().asyncExec(new Runnable() {
+                        public void run() {
+                        	xTextArea.append(thisLine.getxPoint());
+                            yTextArea.append(thisLine.getyPoint());
+                        }
+                     });
                 }
             }
             if(newLineBuffer.size() > 0) {
