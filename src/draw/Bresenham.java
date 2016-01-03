@@ -176,5 +176,9 @@ public class Bresenham {
     public ArrayList<Point> getCoords(){
         return coords;
     }
+    
+    public void resetCoords(){
+    	coords = new ArrayList<>();
+    }
 
 }

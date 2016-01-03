@@ -120,32 +120,34 @@ public class DrawThread implements Runnable {
                         	gc.setForeground(cc);
                             gc.drawPoint(point.x, point.y);
                         }
-                     });
+                    });
+                    
+                    if(newLines.get(0).getxPoint() == Integer.toString(point.x) && newLines.get(0).getyPoint() == Integer.toString(point.y)) {
+                    	newLines.remove(0);
+                    }
+                    
+                    Display.getDefault().asyncExec(new Runnable() {
+                        public void run() {
+                        	xTextArea.setText("");
+                            yTextArea.setText("");
+                        }
+                    });
+                    
+                    for(Line thisLine: newLines) {
+                    	Display.getDefault().asyncExec(new Runnable() {
+                            public void run() {
+                            	xTextArea.append(thisLine.getxPoint());
+                                yTextArea.append(thisLine.getyPoint());
+                            }
+                        });
+                    }
+                    
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException ex) {
                     }
                 }
                 
-                if(newLines.size() > 0) {
-                	newLines.remove(0);
-                }
-
-                Display.getDefault().asyncExec(new Runnable() {
-                    public void run() {
-                    	xTextArea.setText("");
-                        yTextArea.setText("");
-                    }
-                 });
-                
-                for(Line thisLine: newLines) {
-                	Display.getDefault().asyncExec(new Runnable() {
-                        public void run() {
-                        	xTextArea.append(thisLine.getxPoint());
-                            yTextArea.append(thisLine.getyPoint());
-                        }
-                     });
-                }
             }
             if(newLineBuffer.size() > 0) {
                 newLines.addAll(newLineBuffer);
@@ -169,6 +171,10 @@ public class DrawThread implements Runnable {
     public void addLines(ArrayList<Line> lines) {
         newLineBuffer.addAll(lines);
         System.out.println("newLineBuffer: " + newLineBuffer.size());
+    }
+    
+    public void resetLines() {
+        newLineBuffer = new ArrayList<>();
     }
 
     public boolean isRunning() {
