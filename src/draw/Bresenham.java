@@ -22,7 +22,7 @@ public class Bresenham {
     double error;
 
 //    Map<Integer, Point> coords = new HashMap<>();
-ArrayList<Point> coords = new ArrayList<>();
+    ArrayList<Point> coords = new ArrayList<>();
 
     public Bresenham() {
 

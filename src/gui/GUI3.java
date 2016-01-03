@@ -140,6 +140,18 @@ public class GUI3 extends Shell {
 			}
 			public void mouseDoubleClick(MouseEvent e) {}
 		});
+		
+		rBtn.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {}
+			public void mouseUp(MouseEvent e) {
+				System.out.println("End");
+				drawThread.stop();
+				newLines = new ArrayList<>();
+				bresenham = new Bresenham();
+				click = new Point(0, 0);
+			}
+			public void mouseDoubleClick(MouseEvent e) {}
+		});
 	}
 
 	/**
@@ -148,7 +160,6 @@ public class GUI3 extends Shell {
 	protected void createContents() {
 		setText("Aufgabe 3 - Bresenham");
 		setSize(800, 600);
-
 	}
 
 	@Override

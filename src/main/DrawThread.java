@@ -65,6 +65,17 @@ public class DrawThread implements Runnable {
             throw new IllegalStateException("Thread not started.");
         synchronized (runThread) {
             try {
+            	drawn = new ArrayList<>();
+            	newLines = new ArrayList<>();
+            	newLineBuffer = new ArrayList<>();
+            	Display.getDefault().asyncExec(new Runnable() {
+                    public void run() {
+                    	xTextArea.setText("0");
+                        yTextArea.setText("0");
+                    }
+                 });
+            	canvas.redraw();
+            	
                 running = false;
                 runThread.notify();
                 runThread.join();
