@@ -126,7 +126,10 @@ public class DrawThread implements Runnable {
                     } catch (InterruptedException ex) {
                     }
                 }
-                newLines.remove(0);
+                
+                if(newLines.size() > 0) {
+                	newLines.remove(0);
+                }
 
                 Display.getDefault().asyncExec(new Runnable() {
                     public void run() {
