@@ -70,8 +70,8 @@ public class DrawThread implements Runnable {
             	newLineBuffer = new ArrayList<>();
             	Display.getDefault().asyncExec(new Runnable() {
                     public void run() {
-                    	xTextArea.setText("0");
-                        yTextArea.setText("0");
+                    	xTextArea.setText("0\n");
+                        yTextArea.setText("0\n");
                     }
                  });
             	canvas.redraw();
@@ -109,11 +109,12 @@ public class DrawThread implements Runnable {
             while (newLines.size() > 0){
             	System.out.println("DrawThread run() while(running) while()");
                 Line line = newLines.get(0);
+                
                 for (int i = 0; i < line.getCoords().size(); i++) {
                     Point point = line.getCoords().get(i);
                     drawn.add(point);
                     
-                    System.out.println(point.x + " " + point.y);
+//                    System.out.println(point.x + " " + point.y);
                     
                     Display.getDefault().asyncExec(new Runnable() {
                         public void run() {
@@ -122,11 +123,15 @@ public class DrawThread implements Runnable {
                         }
                     });
                     
-                    if(newLines.get(0).getxPoint() == Integer.toString(point.x) && newLines.get(0).getyPoint() == Integer.toString(point.y)) {
-                    	newLines.remove(0);
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
                     }
-                    
-                    Display.getDefault().asyncExec(new Runnable() {
+                }
+                
+                if(newLines.size() > 0) {
+                	newLines.remove(0);
+                	Display.getDefault().asyncExec(new Runnable() {
                         public void run() {
                         	xTextArea.setText("");
                             yTextArea.setText("");
@@ -140,11 +145,6 @@ public class DrawThread implements Runnable {
                                 yTextArea.append(thisLine.getyPoint());
                             }
                         });
-                    }
-                    
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
                     }
                 }
                 
@@ -163,6 +163,14 @@ public class DrawThread implements Runnable {
                         e.printStackTrace();
                     }
                 }
+            }
+            
+            if(!running) {
+            	Display.getDefault().asyncExec(new Runnable() {
+                    public void run() {
+                    	canvas.redraw();
+                    }
+                });
             }
         }
         paused = false;

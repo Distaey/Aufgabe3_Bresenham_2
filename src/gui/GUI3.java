@@ -149,8 +149,8 @@ public class GUI3 extends Shell {
 				newLines = new ArrayList<>();
 				bresenham = new Bresenham();
 				click = new Point(0, 0);
-				xTextArea.append("0");
-				yTextArea.append("0");
+				xTextArea.append("0\n");
+				yTextArea.append("0\n");
 			}
 			public void mouseDoubleClick(MouseEvent e) {}
 		});
